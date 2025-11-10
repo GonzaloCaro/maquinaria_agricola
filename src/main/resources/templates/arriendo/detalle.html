@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title th:text="${maquina.marca} + ' ' + ${maquina.modelo}">
+      Detalle Máquina
+    </title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+  </head>
+  <body>
+    <header>
+      <h1>Detalles de la máquina</h1>
+    </header>
+
+    <main>
+      <section class="detalle-maquina">
+        <h2 th:text="${maquina.marca} + ' ' + ${maquina.modelo}"></h2>
+        <p>
+          <strong>Año:</strong>
+          <span th:text="${maquina.anioFabricacion}"></span>
+        </p>
+        <p>
+          <strong>Estado:</strong> <span th:text="${maquina.estado}"></span>
+        </p>
+        <p>
+          <strong>Descripción:</strong>
+          <span th:text="${maquina.descripcion}"></span>
+        </p>
+        <p>
+          <strong>Precio por día:</strong> $
+          <span th:text="${maquina.precioDiario}"></span>
+        </p>
+
+        <form
+          th:action="@{'/arriendo/' + ${maquina.id} + '/confirmar'}"
+          method="post"
+        >
+          <button type="submit" class="btn-arrendar">
+            Arrendar esta máquina
+          </button>
+        </form>
+
+        <button class="secondary" onclick="window.history.back()">
+          Volver
+        </button>
+      </section>
+    </main>
+  </body>
+</html>

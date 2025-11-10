@@ -1,0 +1,115 @@
+/* ======== Reset básico ======== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", Arial, sans-serif;
+}
+
+body {
+  background-color: #f8f9fa;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+/* ======== Header ======== */
+header {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #222;
+}
+
+/* ======== Contenedor principal ======== */
+main {
+  width: 100%;
+  max-width: 600px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  padding: 2rem;
+}
+
+/* ======== Detalle de máquina ======== */
+.detalle-maquina h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #1a1a1a;
+}
+
+.detalle-maquina p {
+  margin: 0.6rem 0;
+  line-height: 1.5;
+}
+
+.detalle-maquina strong {
+  color: #555;
+}
+
+/* ======== Botones ======== */
+button,
+a.btn {
+  display: inline-block;
+  margin-top: 1rem;
+  background-color: #2f7d32;
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button:hover,
+a.btn:hover {
+  background-color: #256428;
+}
+
+button.secondary {
+  background-color: #6c757d;
+}
+
+button.secondary:hover {
+  background-color: #5a6268;
+}
+
+/* ======== Confirmación ======== */
+.confirmacion-container {
+  max-width: 600px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  padding: 2rem;
+  text-align: center;
+}
+
+.confirmacion-container h2 {
+  color: #1a1a1a;
+  margin-bottom: 1rem;
+}
+
+.confirmacion-container p {
+  color: #444;
+  margin-bottom: 2rem;
+}
+
+a.volver {
+  color: #2f7d32;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+a.volver:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Inicio - Maquinarias Agrícolas</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+      }
+      header {
+        background-color: #2e7d32;
+        color: white;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .topbar a {
+        color: white;
+        text-decoration: none;
+        margin: 0 0.5rem;
+      }
+      .topbar a:hover {
+        text-decoration: underline;
+      }
+
+      .content {
+        display: grid;
+        grid-template-columns: 1fr 3fr 1fr;
+        gap: 1rem;
+        padding: 1rem;
+      }
+      .banner {
+        background-color: #fff;
+        height: 500px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        padding: 1rem;
+      }
+
+      .main {
+        background-color: white;
+        border-radius: 8px;
+        padding: 1rem;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .filters {
+        margin-bottom: 1rem;
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+      .filters input,
+      .filters select {
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1rem;
+      }
+      .card {
+        background: #fafafa;
+        border-radius: 8px;
+        padding: 1rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+      .card h3 {
+        margin: 0.5rem 0;
+      }
+      .card button {
+        padding: 0.5rem 1rem;
+        background: #2e7d32;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .card button:hover {
+        background: #1b5e20;
+      }
+
+      h2 {
+        margin-top: 1.5rem;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo"><h1>🌾 Maquinarias Agrícolas</h1></div>
+      <div class="topbar">
+        <div id="auth-buttons">
+          <a href="/login">Iniciar Sesión</a> |
+          <a href="/register">Registrarse</a>
+        </div>
+        <div id="user-info" style="display: none">
+          Hola, <span id="usuarioNombre"></span> |
+          <a href="/admin/maquinas">Gestionar Máquinas</a> |
+          <a href="/admin/types">Gestionar Tipos</a>
+          <a href="#" id="logoutBtn">Cerrar sesión</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+      <!-- Banner Izquierdo -->
+      <div class="banner">
+        <h3>Aviso Comercial</h3>
+        <p>Publicidad o anuncios aquí.</p>
+      </div>
+
+      <!-- Contenido principal -->
+      <div class="main">
+        <!-- Filtros -->
+        <form class="filters" th:action="@{/}" method="get">
+          <select name="tipo">
+            <option value="">Tipo</option>
+            <option value="tractor">Tractor</option>
+            <option value="cosechadora">Cosechadora</option>
+          </select>
+          <input type="text" name="marca" placeholder="Marca" />
+          <input type="text" name="modelo" placeholder="Modelo" />
+          <input type="number" name="anio" placeholder="Año" />
+          <select name="estado">
+            <option value="">Estado</option>
+            <option value="nuevo">Nuevo</option>
+            <option value="usado">Usado</option>
+          </select>
+          <button type="submit">Filtrar</button>
+        </form>
+
+        <!-- Últimas máquinas -->
+        <h2>Últimas máquinas agregadas</h2>
+        <div class="cards">
+          <div th:each="maquina : ${ultimas}" class="card">
+            <h3 th:text="${maquina.marca} + ' ' + ${maquina.modelo}"></h3>
+            <p th:text="'Año: ' + ${maquina.anioFabricacion}"></p>
+            <p th:text="'Estado: ' + ${maquina.estado}"></p>
+            <button
+              th:if="${usuarioLogueado != null}"
+              th:attr="onclick=|window.location.href='/arriendo/${maquina.id}';|"
+            >
+              Ver Detalles
+            </button>
+            <button
+              th:if="${usuarioLogueado == null}"
+              onclick="alert('Debes iniciar sesión o registrarte para ver detalles una máquina')"
+            >
+              Ver Detalles
+            </button>
+          </div>
+        </div>
+
+        <!-- Populares -->
+        <h2>Máquinas populares</h2>
+        <div class="cards">
+          <div th:each="maquina : ${populares}" class="card">
+            <h3 th:text="${maquina.marca} + ' ' + ${maquina.modelo}"></h3>
+            <p th:text="'Año: ' + ${maquina.anioFabricacion}"></p>
+            <button
+              th:if="${usuarioLogueado != null}"
+              th:attr="onclick=|window.location.href='/arriendo/${maquina.id}';|"
+            >
+              Ver Detalles
+            </button>
+            <button
+              th:if="${usuarioLogueado == null}"
+              onclick="alert('Debes iniciar sesión o registrarte para ver detalles una máquina')"
+            >
+              Ver Detalles
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Banner Derecho -->
+      <div class="banner">
+        <h3>Aviso Comercial</h3>
+        <p>Publicidad o anuncios aquí.</p>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const token = localStorage.getItem("token");
+        const authDiv = document.getElementById("auth-buttons");
+        const userDiv = document.getElementById("user-info");
+        const nombreSpan = document.getElementById("usuarioNombre");
+
+        if (token) {
+          try {
+            const payload = JSON.parse(atob(token.split(".")[1]));
+            const nombre =
+              payload.username ||
+              localStorage.getItem("usuarioNombre") ||
+              "Usuario";
+            nombreSpan.textContent = nombre;
+            userDiv.style.display = "inline";
+            authDiv.style.display = "none";
+          } catch (e) {
+            console.error("JWT inválido", e);
+          }
+        }
+
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+          localStorage.removeItem("token");
+          localStorage.removeItem("usuarioNombre");
+          window.location.href = "/";
+        });
+      });
+    </script>
+  </body>
+</html>

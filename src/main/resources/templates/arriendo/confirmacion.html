@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Arriendo confirmado</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+  </head>
+  <body>
+    <div class="confirmacion-container">
+      <h2
+        th:text="'Has arrendado ' + ${maquina.marca} + ' ' + ${maquina.modelo}"
+      ></h2>
+      <p th:text="${mensaje}"></p>
+      <a th:href="@{/}" class="btn">Volver al inicio</a>
+    </div>
+  </body>
+</html>

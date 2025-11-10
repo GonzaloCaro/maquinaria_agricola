@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Gestión de Máquinas</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}" />
+  </head>
+  <body>
+    <header>
+      <h1>Admin - Máquinas</h1>
+      <a th:href="@{/}">Volver al Home</a>
+    </header>
+
+    <div class="container">
+      <h2>Crear Nueva Máquina</h2>
+      <form th:action="@{/admin/maquinas}" method="post">
+        <select name="maquinaType.id">
+          <option
+            th:each="tipo : ${tipos}"
+            th:value="${tipo.id}"
+            th:text="${tipo.nombre}"
+          ></option>
+        </select>
+        <input type="text" name="marca" placeholder="Marca" required />
+        <input type="text" name="modelo" placeholder="Modelo" required />
+        <input type="text" name="numeroSerie" placeholder="Número de Serie" />
+        <input type="number" name="anioFabricacion" placeholder="Año" />
+        <input type="number" name="precioDiario" placeholder="Precio por día" />
+        <input type="text" name="estado" placeholder="Estado" />
+        <input type="text" name="ubicacion" placeholder="Ubicación" />
+        <input type="text" name="descripcion" placeholder="Descripción" />
+        <label>
+          Disponible:
+          <input type="checkbox" name="disponible" />
+        </label>
+        <button type="submit">Agregar Máquina</button>
+      </form>
+
+      <h2>Listado de Máquinas</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Tipo</th>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <th>Año</th>
+            <th>Estado</th>
+            <th>Precio por día</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="maquina : ${maquinas}">
+            <td th:text="${maquina.maquinaType.nombre}"></td>
+            <td th:text="${maquina.marca}"></td>
+            <td th:text="${maquina.modelo}"></td>
+            <td th:text="${maquina.anioFabricacion}"></td>
+            <td th:text="${maquina.estado}"></td>
+            <td th:text="${maquina.precioDiario}"></td>
+            <td>
+              <a
+                th:href="@{'/admin/maquinas/delete/' + ${maquina.id}}"
+                class="btn"
+                >Eliminar</a
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

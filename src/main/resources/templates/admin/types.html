@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Gestión de Tipos</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}" />
+  </head>
+  <body>
+    <header>
+      <h1>Admin - Tipos de Máquinas</h1>
+      <a th:href="@{/}">Volver al Home</a>
+    </header>
+
+    <div class="container">
+      <h2>Crear Nuevo Tipo</h2>
+      <form th:action="@{/admin/types}" method="post">
+        <input
+          type="text"
+          name="nombre"
+          placeholder="Nombre del Tipo"
+          required
+        />
+        <button type="submit">Agregar Tipo</button>
+      </form>
+
+      <h2>Listado de Tipos</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="tipo : ${tipos}">
+            <td th:text="${tipo.nombre}"></td>
+            <td>
+              <a th:href="@{'/admin/types/delete/' + ${tipo.id}}" class="btn"
+                >Eliminar</a
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

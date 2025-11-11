@@ -58,16 +58,7 @@
             <h3 th:text="${maquina.marca} + ' ' + ${maquina.modelo}"></h3>
             <p th:text="'Año: ' + ${maquina.anioFabricacion}"></p>
             <p th:text="'Estado: ' + ${maquina.estado}"></p>
-            <button
-              th:if="${usuarioLogueado != null}"
-              th:attr="onclick=|window.location.href='/arriendo/${maquina.id}';|"
-            >
-              Ver Detalles
-            </button>
-            <button
-              th:if="${usuarioLogueado == null}"
-              onclick="alert('Debes iniciar sesión o registrarte para ver detalles una máquina')"
-            >
+            <button class="ver-detalles-btn" th:attr="data-id=${maquina.id}">
               Ver Detalles
             </button>
           </div>
@@ -79,16 +70,7 @@
           <div th:each="maquina : ${populares}" class="card">
             <h3 th:text="${maquina.marca} + ' ' + ${maquina.modelo}"></h3>
             <p th:text="'Año: ' + ${maquina.anioFabricacion}"></p>
-            <button
-              th:if="${usuarioLogueado != null}"
-              th:attr="onclick=|window.location.href='/arriendo/${maquina.id}';|"
-            >
-              Ver Detalles
-            </button>
-            <button
-              th:if="${usuarioLogueado == null}"
-              onclick="alert('Debes iniciar sesión o registrarte para ver detalles una máquina')"
-            >
+            <button class="ver-detalles-btn" th:attr="data-id=${maquina.id}">
               Ver Detalles
             </button>
           </div>

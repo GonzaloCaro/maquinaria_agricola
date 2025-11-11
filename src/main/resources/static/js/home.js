@@ -35,3 +35,26 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "/";
   });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const token = localStorage.getItem("token");
+  const botones = document.querySelectorAll(".ver-detalles-btn");
+
+  botones.forEach((btn) => {
+    const maquinaId = btn.dataset.id;
+
+    if (token) {
+      // Usuario autenticado -> puede acceder a detalles
+      btn.addEventListener("click", () => {
+        window.location.href = `/arriendo/${maquinaId}`;
+      });
+    } else {
+      // Usuario no autenticado -> alerta
+      btn.addEventListener("click", () => {
+        alert(
+          "Debes iniciar sesión o registrarte para ver detalles de una máquina"
+        );
+      });
+    }
+  });
+});

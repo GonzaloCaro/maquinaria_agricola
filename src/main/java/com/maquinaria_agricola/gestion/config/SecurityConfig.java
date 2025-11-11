@@ -3,6 +3,7 @@ package com.maquinaria_agricola.gestion.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,6 +16,9 @@ import com.maquinaria_agricola.gestion.service.usuario.CustomUserDetailsService;
 import com.maquinaria_agricola.gestion.service.usuario.UsuarioService;
 import com.maquinaria_agricola.gestion.utils.JwtAuthenticationFilter;
 import com.maquinaria_agricola.gestion.utils.JwtUtils;
+
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.header.writers.ContentSecurityPolicyHeaderWriter;
 
 @Configuration
 @EnableWebSecurity
@@ -50,16 +54,26 @@ public class SecurityConfig {
                                 "/images/**",
                                 "/assets/**")
                         .permitAll()
-
                         // Todo lo demás requiere autenticación
                         .anyRequest().authenticated())
-                // No usar formLogin ni sesión de servidor
                 .sessionManagement(session -> session.sessionCreationPolicy(
                         org.springframework.security.config.http.SessionCreationPolicy.STATELESS));
 
         // Registrar el filtro JWT
         http.addFilterBefore(new JwtAuthenticationFilter(jwtUtils, userDetailsService, usuarioService),
-                UsernamePasswordAuthenticationFilter.class);
+                UsernamePasswordAuthenticationFilter.class)
+
+                .headers(headers -> headers
+                        .contentSecurityPolicy(csp -> csp
+                                .policyDirectives(
+                                        "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; base-uri 'self';"))
+                        .xssProtection(xss -> xss.disable())
+                        .frameOptions(frame -> frame.deny())
+                        .httpStrictTransportSecurity(hsts -> hsts
+                                .includeSubDomains(true)
+                                .maxAgeInSeconds(31536000))
+                        .referrerPolicy(referrer -> referrer.policy(
+                                org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter.ReferrerPolicy.NO_REFERRER_WHEN_DOWNGRADE)));
 
         return http.build();
     }

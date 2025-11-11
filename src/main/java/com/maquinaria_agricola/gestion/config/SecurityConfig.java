@@ -3,7 +3,6 @@ package com.maquinaria_agricola.gestion.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -16,9 +15,6 @@ import com.maquinaria_agricola.gestion.service.usuario.CustomUserDetailsService;
 import com.maquinaria_agricola.gestion.service.usuario.UsuarioService;
 import com.maquinaria_agricola.gestion.utils.JwtAuthenticationFilter;
 import com.maquinaria_agricola.gestion.utils.JwtUtils;
-
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.header.writers.ContentSecurityPolicyHeaderWriter;
 
 @Configuration
 @EnableWebSecurity
@@ -55,6 +51,7 @@ public class SecurityConfig {
                                 "/assets/**")
                         .permitAll()
                         // Todo lo demás requiere autenticación
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(
                         org.springframework.security.config.http.SessionCreationPolicy.STATELESS));

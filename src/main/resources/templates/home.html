@@ -13,10 +13,12 @@
           <a href="/login">Iniciar Sesión</a> |
           <a href="/register">Registrarse</a>
         </div>
-        <div id="user-info" style="display: none">
+        <div class="user-info" id="user-info">
           Hola, <span id="usuarioNombre"></span> |
-          <a href="/admin/maquinas">Gestionar Máquinas</a> |
-          <a href="/admin/types">Gestionar Tipos</a>
+          <span id="admin-buttons">
+            <a href="/admin/maquinas">Gestionar Máquinas</a> |
+            <a href="/admin/types">Gestionar Tipos</a> |
+          </span>
           <a href="#" id="logoutBtn">Cerrar sesión</a>
         </div>
       </div>
@@ -99,35 +101,6 @@
         <p>Publicidad o anuncios aquí.</p>
       </div>
     </div>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const token = localStorage.getItem("token");
-        const authDiv = document.getElementById("auth-buttons");
-        const userDiv = document.getElementById("user-info");
-        const nombreSpan = document.getElementById("usuarioNombre");
-
-        if (token) {
-          try {
-            const payload = JSON.parse(atob(token.split(".")[1]));
-            const nombre =
-              payload.username ||
-              localStorage.getItem("usuarioNombre") ||
-              "Usuario";
-            nombreSpan.textContent = nombre;
-            userDiv.style.display = "inline";
-            authDiv.style.display = "none";
-          } catch (e) {
-            console.error("JWT inválido", e);
-          }
-        }
-
-        document.getElementById("logoutBtn").addEventListener("click", () => {
-          localStorage.removeItem("token");
-          localStorage.removeItem("usuarioNombre");
-          window.location.href = "/";
-        });
-      });
-    </script>
+    <script th:src="@{/js/home.js}" defer></script>
   </body>
 </html>

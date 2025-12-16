@@ -89,6 +89,15 @@ public class Usuario {
         this.userName = userName;
     }
 
+    // Alias for method setUserName to handle 'username' property standard naming
+    public void setUsername(String username) {
+        this.userName = username;
+    }
+
+    public String getUsername() {
+        return userName;
+    }
+
     public RoleUser getRole() {
         return role;
     }

@@ -36,6 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.usuarioService = usuarioService;
     }
 
+    @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
@@ -54,23 +55,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 token = header.substring(7);
             }
         }
-        if (jwtUtils.validateJwtToken(token)) {
+
+        if (token != null && jwtUtils.validateJwtToken(token)) {
             String username = jwtUtils.getUserNameFromJwtToken(token);
-            Usuario usuario = usuarioService.getByUserName(username);
 
-            if (usuario != null) {
-                List<GrantedAuthority> authorities = new ArrayList<>();
-                if (usuario.getRole() != null && usuario.getRole().getRol() != null) {
-                    authorities.add(new SimpleGrantedAuthority(
-                            "ROLE_" + usuario.getRole().getRol().getNombre().toUpperCase()));
+            try {
+                Usuario usuario = usuarioService.getByUserName(username);
 
+                if (usuario != null) {
+                    List<GrantedAuthority> authorities = new ArrayList<>();
+                    if (usuario.getRole() != null && usuario.getRole().getRol() != null) {
+                        authorities.add(new SimpleGrantedAuthority(
+                                "ROLE_" + usuario.getRole().getRol().getNombre().toUpperCase()));
+                    }
+
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                            username, null, authorities);
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
-
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        username, null, authorities);
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } catch (Exception e) {
+                logger.warn("Token válido pero usuario no encontrado en BD: " + username);
             }
         }
 
